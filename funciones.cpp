@@ -10,7 +10,6 @@ void imprimir_string(string v, string nombre_v)
 void imprimir_vector(vector<int> v, string nombre_v)
 {
     cout << endl;
-    cout << nombre_v << ": ";
     for(int i=0;i<v.size();i++)
     {
       cout << v[i];
@@ -91,16 +90,40 @@ int pasar_decimal(vector<int> v)
   return auxiliar;
 }
 
-void cifrar(vector<int> v, string nombre_v)
+void cifrar(string m,vector<int> v)
 {
+  /*string auxiliar;
+  auxiliar = m;
+  int contador = m.length();
+  int i = 0;
+
+  while(contador < v.size())
+  {
+    while(i < m.length())
+    {
+      auxiliar[contador] = m[i];
+      i++;
+      contador++;
+    }
+    i=0;
+  }
+
+  cout << "Tamanio de auxiliar->" << auxiliar << endl;
+  cout << "Mensaje original: ";
+  for(int i=0;i<auxiliar.length();i++)
+  {
+    cout << auxiliar[i] << "";
+  }
+  //cout << "{";
+  */
+  cout << endl;
   cout << "Mensaje cifrado: " << endl;
-  cout << nombre_v << ": ";
   for(int i=0;i<v.size();i++)
   {
-    //cout << "Entro" << endl;
-    cout << (char)(v[i]);
+      cout << (char)(v[i]) << " ";
   }
   cout << endl;
+  //cout << "}" << endl;
 }
 
 string menu_principal(void)
