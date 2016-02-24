@@ -1,147 +1,29 @@
-//Probar el xor con string
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
 #include <string.h>
 #include <math.h>
+#include "funciones.cpp"
+
 
 using namespace std;
 
 
-void imprimir_string(string v, string nombre_v)
-{
-    cout << endl;
-    cout << nombre_v << ": " << v << endl;
-}
-
-void imprimir_vector(vector<int> v, string nombre_v)
-{
-    cout << endl;
-    cout << nombre_v << ": ";
-    for(int i=0;i<v.size();i++)
-    {
-      cout << v[i];
-    }
-    cout << endl;
-}
-
-string pasar_binario(int v)
-{
-  string binario;
-
-  int divisor = 2;
-  int dividendo = 0;
-  int resto = 0;
-
-  dividendo = v;
-  while(dividendo >= divisor)
-  {
-      resto = dividendo % 2;
-      if(resto == 1)
-      {
-          binario = "1" + binario;
-      }
-      else
-      {
-          binario = "0" + binario;
-      }
-      dividendo = dividendo / divisor;
-  }
-  if(dividendo == 1)
-  {
-    binario = "1" + binario;
-  }
-  else
-  {
-      binario = "0" + binario;
-  }
-  if(binario.length() < 8)
-  {
-    while(binario.length() < 8)
-    {
-      binario = "0" +binario;
-    }
-    //cout << "En sistema binario " << v[0] << " se escribe " << binario  << endl;
-  }
-
-  cout << "En sistema binario " << v << " se escribe " << binario  << endl;
-  return binario;
-}
-
-vector<int> operacion_xor(string binario_,string clave_)
-{
-    cout << "Xor entre mensaje original y clave:" << endl;
-    cout << "[O:Mensaje original,C: Clave, R: Resultado en binario,RD: Resultado en decimal]" << endl;
-    imprimir_string(binario_, "0");
-    imprimir_string(clave_,"C");
-    vector<int> auxiliar;
-    auxiliar.resize(binario_.length());
-    for(int i=0;i<binario_.length();i++)
-    {
-      auxiliar[i] = (((int)binario_[i]) ^ ((int)clave_[i]));
-    }
-
-    return auxiliar;
-}
-
-int pasar_decimal(vector<int> v)
-{
-  int auxiliar = 0;
-  int i=0;
-  int j=7;
-  while(i<v.size() && j>=0)
-  {
-      auxiliar += v[i] * pow(2,j);
-      i++;
-      j--;
-  }
-  return auxiliar;
-}
-
-void cifrar(vector<int> v, string nombre_v)
-{
-  cout << nombre_v << ": ";
-  for(int i=0;i<v.size();i++)
-  {
-    cout << (char)v[i];
-  }
-  cout << endl;
-}
-
-string menu_principal(void)
-{
-  string auxiliar = "";
-  cout << "--------------------Practica 1---------------------" << endl;
-  cout << "----------------CIFRADO DE VERNAM------------------" << endl;
-  cout << "Introduzca el mensaje:";
-  cin >> auxiliar;
-  return auxiliar;
-}
-
-void comprobar_clave(string c, int tam_mensaje)
-{
-    if(c.length() != tam_mensaje)
-    {
-      cerr << "La clave no es correcta" << endl;
-      exit(-1);
-    }
-}
-
 int main()
 {
   //Declaración de variables
-  string mensaje_original = "";
-  vector<int> mensaje_decimal;
-  string binario = "";
-  string clave;
-  vector<int> cifrado_decimal;
+  string mensaje_original = ""; //String que almacena el mensaje original que se cifrará
+  vector<int> mensaje_decimal; //Vector de enteros que contendrá los decimales asociados a cada caracter del String mensaje_original
+  string binario = ""; //String que contendrá el binario resultante de convertir cada decimal del vector mensaje_decimal a binario de 8 bits
+  string clave; //String en el que se almacenará la clave introducida por el usuario por teclado
+  vector<int> cifrado_decimal; //String que almacenará los decimales asociados al binario resultante
 
-  string opcion = "n";
-  string respuesta = "s";
+  string respuesta = "s"; //Variable para almacenar la respuesta del usuario, indicando si quiere realizar otro cifrado o no.
 
   while(respuesta == "s" || respuesta == "S")
   {
     system("clear");
+    
     //Vaciamos vectores
     mensaje_original = "";
     mensaje_decimal.clear();
@@ -149,9 +31,9 @@ int main()
     clave = "";
     cifrado_decimal.clear();
 
-    mensaje_original = menu_principal();
-
+    mensaje_original = menu_principal(); //Mostramos mensaje de bienvenida al usuario
     mensaje_decimal.resize(mensaje_original.length());
+  
     cout << "----------------------" << endl;
     cout << endl;
     cout << "Mensaje introducido: " << mensaje_original << endl;
@@ -160,18 +42,20 @@ int main()
     for(int i=0;i<mensaje_original.length();i++)
     {
       cout << "Caracter[" << i << "]:" << mensaje_original[i] << " || Decimal->" << int(mensaje_original[i]) << endl;
-      mensaje_decimal[i] = int(mensaje_original[i]);
+      mensaje_decimal[i] = int(mensaje_original[i]); //Vector de enteros mensaje_decimal
     }
 
     cout << endl;
     cout << "----------------------" << endl;
-    //Genero el número binario
+
+    //Genero el número binario llamando a la función pasar_binario por cada decimal del vector mensaje_decimal
     cout << "Pasamos a binario cada decimal:" << endl;
     for(int i=0;i<mensaje_decimal.size();i++)
     {
       binario = binario + pasar_binario(mensaje_decimal[i]);
     }
 
+    //Llamamos a la función imprimir_string para mostrar por pantalla al usuario el binario resultante
     imprimir_string(binario, "Binario");
     cout << "----------------------" << endl;
 
@@ -179,10 +63,11 @@ int main()
     cout << "Introduzca clave: ";
     cin >> clave;
 
+    //Comprobamos que la longitud de la clave sea la correcta
     comprobar_clave(clave,mensaje_original.length()*8);
 
     //clave = "0000111100100001";
-    //comprobar_clave(clave);
+
     cout << endl;
     cout << "----------------------" << endl;
 
@@ -197,39 +82,39 @@ int main()
     //Generamos los decimales asociados al cifrado en binario resultante de la operación xor.
     cifrado_decimal.resize(mensaje_original.length());
     cout << "RD: [";
-    int i=0;
-    int j=0;
-    int x=0;
-    int limite = 8;
-    vector<int> auxiliar;
-    auxiliar.resize(8);
-    while(i<cifrado_binario.size())
+    int contador1=0;
+    int contador2=0;
+    int contador3=0;
+    int maximo = 8;
+    
+    vector<int> fragmento;
+    fragmento.resize(8);
+    
+    //Con el índice contador1 recorro cifrado_binario desde 0 hasta su tamaño
+    while(contador1<cifrado_binario.size())
     {
-      while(j<limite)
+      //Con el índice contador2 recorro desde 0 a 8 cifrado_binario separando el binario en grupos de 8 y almacenándolo an auxiliar
+      while(contador2<maximo)
       {
-        auxiliar[j] = cifrado_binario[i];
-        i++;
-        j++;
+        fragmento[contador2] = cifrado_binario[contador1];
+        contador1++;
+        contador2++;
       }
-      //cout << "Imprimiendo auxiliar:" << endl;
-      /*for(int i=0;i<auxiliar.size();i++)
-      {
-        cout << auxiliar[i];
-      }*/
-      cifrado_decimal[x] = pasar_decimal(auxiliar);
-      cout << cifrado_decimal[x];
-      if(x+1 < cifrado_binario.size()/8)
+      
+      cifrado_decimal[contador3] = pasar_decimal(fragmento); //Paso a decimal un conjunto de 8 bits y devuelvo un decimal que almaceno en el vector de enteros cifrado_decimal
+      cout << cifrado_decimal[contador3];
+      if(contador3+1 < cifrado_binario.size()/8)
       {
         cout << ",";
       }
-      //cout << "Imprimiendo decimal ->" << cifrado_decimal[x] << endl;
 
-      x++;
-      j = 0;
+      contador3++; //Contador para mostrar por pantalla "," al lado de los decimales.
+      contador2 = 0; //Reinicio j para volver a almacenar en auxiliar desde la posición 0 correctamente.
     }
     cout << "]" << endl;
     cout << "----------------------" << endl;
 
+    //Llamo a la función cifrar y se le pasa el vector de enteros resultante de la codificación y se imprime el mensaje codificado
     cifrar(cifrado_decimal, "Mensaje cifrado");
     cout << "¿Desea cifrar un nuevo mensaje?[s|n]: ";
     cin >> respuesta;
