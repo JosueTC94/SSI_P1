@@ -93,10 +93,12 @@ int pasar_decimal(vector<int> v)
 
 void cifrar(vector<int> v, string nombre_v)
 {
+  cout << "Mensaje cifrado: " << endl;
   cout << nombre_v << ": ";
   for(int i=0;i<v.size();i++)
   {
-    cout << (char)v[i];
+    //cout << "Entro" << endl;
+    cout << (char)(v[i]);
   }
   cout << endl;
 }
